@@ -2,8 +2,6 @@
 
 **AI Career Explorer** is a minimal, AI-assisted web app designed to help students discover potential career paths and explore recommended learning resources tailored to their interests and skills.
 
-This project is a prototype built for a technical interview with Array Education, and is inspired by their mission to support young people from early education through a strong career launch.
-
 ---
 
 ## ✨ Features (MVP)
