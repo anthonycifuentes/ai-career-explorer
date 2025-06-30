@@ -15,7 +15,11 @@ app.use(helmet());
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "https://ai-career-explorer-9w1ued3tc-anthonycifuentes-projects.vercel.app",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true,
   })
