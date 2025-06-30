@@ -112,7 +112,7 @@ export function SimpleChat({
       {/* Input Area */}
       <div className="border-t p-4">
         <form onSubmit={onSubmit} className="relative flex items-end space-x-2">
-          <div className="relative flex-1">
+          <div className="flex w-full items-center justify-between gap-2">
             <textarea
               value={input}
               onChange={handleInputChange}
@@ -122,13 +122,13 @@ export function SimpleChat({
               rows={1}
               style={{ minHeight: "44px", maxHeight: "120px" }}
             />
-            <div className="absolute right-2 bottom-2">
+            <div>
               {isLoading ? (
                 <Button
                   type="button"
                   size="icon"
                   variant="ghost"
-                  className="h-8 w-8"
+                  className="h-12 w-12"
                   onClick={stop}
                 >
                   <Square className="h-4 w-4" fill="currentColor" />
@@ -137,7 +137,7 @@ export function SimpleChat({
                 <Button
                   type="submit"
                   size="icon"
-                  className="h-8 w-8"
+                  className="h-12 w-12"
                   disabled={!input.trim() || isLoading}
                 >
                   <ArrowUp className="h-4 w-4" />
