@@ -29,7 +29,7 @@ export function AudioVisualizer({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const audioContextRef = useRef<AudioContext | null>(null)
   const analyserRef = useRef<AnalyserNode | null>(null)
-  const animationFrameRef = useRef<number>()
+  const animationFrameRef = useRef<number | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Cleanup function to stop visualization and close audio context
@@ -187,7 +187,7 @@ export function AudioVisualizer({
   return (
     <div
       ref={containerRef}
-      className="h-full w-full cursor-pointer rounded-lg bg-background/80 backdrop-blur"
+      className="bg-background/80 h-full w-full cursor-pointer rounded-lg backdrop-blur"
       onClick={onClick}
     >
       <canvas ref={canvasRef} className="h-full w-full" />

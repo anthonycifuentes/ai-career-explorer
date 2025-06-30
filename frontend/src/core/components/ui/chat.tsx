@@ -1,3 +1,4 @@
+import { ArrowDown, ThumbsDown, ThumbsUp } from "lucide-react"
 import {
   forwardRef,
   useCallback,
@@ -5,16 +6,15 @@ import {
   useState,
   type ReactElement,
 } from "react"
-import { ArrowDown, ThumbsDown, ThumbsUp } from "lucide-react"
 
-import { cn } from "@/core/lib/utils"
-import { useAutoScroll } from "@/core/hooks/use-auto-scroll"
 import { Button } from "@/core/components/ui/button"
 import { type Message } from "@/core/components/ui/chat-message"
 import { CopyButton } from "@/core/components/ui/copy-button"
 import { MessageInput } from "@/core/components/ui/message-input"
 import { MessageList } from "@/core/components/ui/message-list"
 import { PromptSuggestions } from "@/core/components/ui/prompt-suggestions"
+import { useAutoScroll } from "@/core/hooks/use-auto-scroll"
+import { cn } from "@/core/lib/utils"
 
 interface ChatPropsBase {
   handleSubmit: (
@@ -75,9 +75,14 @@ export function Chat({
     if (!setMessages) return
 
     const latestMessages = [...messagesRef.current]
-    const lastAssistantMessage = latestMessages.findLast(
-      (m) => m.role === "assistant"
-    )
+    const lastAssistantMessage = (() => {
+      for (let i = latestMessages.length - 1; i >= 0; i--) {
+        if (latestMessages[i].role === "assistant") {
+          return latestMessages[i]
+        }
+      }
+      return undefined
+    })()
 
     if (!lastAssistantMessage) return
 
@@ -86,7 +91,7 @@ export function Chat({
 
     if (lastAssistantMessage.toolInvocations) {
       const updatedToolInvocations = lastAssistantMessage.toolInvocations.map(
-        (toolInvocation) => {
+        (toolInvocation: any) => {
           if (toolInvocation.state === "call") {
             needsUpdate = true
             return {
@@ -253,16 +258,16 @@ export function ChatMessages({
       onScroll={handleScroll}
       onTouchStart={handleTouchStart}
     >
-      <div className="max-w-full [grid-column:1/1] [grid-row:1/1]">
+      <div className="[grid-column:1/1] [grid-row:1/1] max-w-full">
         {children}
       </div>
 
       {!shouldAutoScroll && (
-        <div className="pointer-events-none flex flex-1 items-end justify-end [grid-column:1/1] [grid-row:1/1]">
+        <div className="pointer-events-none [grid-column:1/1] [grid-row:1/1] flex flex-1 items-end justify-end">
           <div className="sticky bottom-0 left-0 flex w-full justify-end">
             <Button
               onClick={scrollToBottom}
-              className="pointer-events-auto h-8 w-8 rounded-full ease-in-out animate-in fade-in-0 slide-in-from-bottom-1"
+              className="animate-in fade-in-0 slide-in-from-bottom-1 pointer-events-auto h-8 w-8 rounded-full ease-in-out"
               size="icon"
               variant="ghost"
             >
@@ -303,7 +308,7 @@ interface ChatFormProps {
 }
 
 export const ChatForm = forwardRef<HTMLFormElement, ChatFormProps>(
-  ({ children, handleSubmit, isPending, className }, ref) => {
+  ({ children, handleSubmit, className }, ref) => {
     const [files, setFiles] = useState<File[] | null>(null)
 
     const onSubmit = (event: React.FormEvent) => {
