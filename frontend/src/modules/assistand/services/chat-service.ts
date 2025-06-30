@@ -1,8 +1,6 @@
 // frontend/src/modules/assistant/services/chat-service.ts
 
-interface CourseQueryRequest {
-  query: string
-}
+import { ENVIROMENT } from "@/core/lib/enviroments"
 
 interface Course {
   id: string
@@ -27,7 +25,7 @@ interface CourseQueryResponse {
   query: string
 }
 
-const baseUrl = "http://localhost:3000/api"
+const baseUrl = ENVIROMENT.VITE_API_URL
 
 const simpleQuery = async (query: string): Promise<CourseQueryResponse> => {
   try {
