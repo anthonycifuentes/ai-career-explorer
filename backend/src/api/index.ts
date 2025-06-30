@@ -1,14 +1,8 @@
 import express from "express";
-
+import coursesRoutes from "../modules/courses/routes/courses-routes";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({
-    message: "Welcome to the API",
-    version: "1.0.0",
-    documentation: "https://example.com/docs",
-  });
-});
+router.use("/courses", coursesRoutes);
 
 export default router;

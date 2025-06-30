@@ -1,14 +1,11 @@
-// Updated app.ts - NO raw-body package needed
 import express from "express";
-// import { toNodeHandler } from "better-auth/node";
 import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
 
 import * as middlewares from "./middlewares";
-// import api from "./api";
+import api from "./api";
 import MessageResponse from "./interfaces/MessageResponse";
-// import { auth } from "./modules/auth/config/auth";
 
 require("dotenv").config();
 
@@ -24,7 +21,6 @@ app.use(
   })
 );
 
-
 // General JSON middleware for all other routes
 app.use(express.json());
 
@@ -34,7 +30,7 @@ app.get<{}, MessageResponse>("/", (req, res) => {
   });
 });
 
-// app.use("/api/v1", api);
+app.use("/api", api);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
