@@ -1,63 +1,44 @@
-import {
-  ChatContainer,
-  ChatForm,
-  ChatMessages,
-} from "@/core/components/ui/chat"
-import { MessageInput } from "@/core/components/ui/message-input"
-import { MessageList } from "@/core/components/ui/message-list"
-import { PromptSuggestions } from "@/core/components/ui/prompt-suggestions"
-import { useChat } from "@ai-sdk/react"
-const AssistandPageTemplate = () => {
+// frontend/src/modules/assistant/templates/assistant-page-template.tsx
+
+import { SimpleChat } from "../components/simple-chat"
+import { useCourseChat } from "../hooks/use-course-chat"
+
+const AssistantPageTemplate = () => {
   const {
     messages,
     input,
     handleInputChange,
     handleSubmit,
-    append,
-    status,
+    isLoading,
     stop,
-  } = useChat()
+    append,
+  } = useCourseChat()
 
-  const isLoading = status === "submitted" || status === "streaming"
-  const lastMessage = messages.at(-1)
-  const isEmpty = messages.length === 0
-  const isTyping = lastMessage?.role === "user"
+  const suggestions = [
+    "I want to learn programming for beginners",
+    "Show me advanced JavaScript courses",
+    "Find courses about data science",
+    "What programming courses do you have?",
+  ]
+
+  const handleSuggestionClick = (suggestion: string) => {
+    append({ role: "user", content: suggestion })
+  }
 
   return (
-    <ChatContainer>
-      {isEmpty ? (
-        <PromptSuggestions
-          label="Suggestions"
-          append={append}
-          suggestions={["What is the capital of France?", "Tell me a joke"]}
-        />
-      ) : null}
-
-      {!isEmpty ? (
-        <ChatMessages messages={messages}>
-          <MessageList messages={messages} isTyping={isTyping} />
-        </ChatMessages>
-      ) : null}
-
-      <ChatForm
-        className="mt-auto"
-        isPending={isLoading || isTyping}
+    <div className="h-full">
+      <SimpleChat
+        messages={messages}
+        input={input}
+        handleInputChange={handleInputChange}
         handleSubmit={handleSubmit}
-      >
-        {({ files, setFiles }) => (
-          <MessageInput
-            value={input}
-            onChange={handleInputChange}
-            allowAttachments
-            files={files}
-            setFiles={setFiles}
-            stop={stop}
-            isGenerating={isLoading}
-          />
-        )}
-      </ChatForm>
-    </ChatContainer>
+        isLoading={isLoading}
+        stop={stop}
+        suggestions={suggestions}
+        onSuggestionClick={handleSuggestionClick}
+      />
+    </div>
   )
 }
 
-export default AssistandPageTemplate
+export default AssistantPageTemplate
